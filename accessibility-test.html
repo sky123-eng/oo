@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无障碍测试</title>
+    <script src="https://unpkg.com/axe-core@4.8.4/axe.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #results {
+            white-space: pre-wrap;
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+        .warning {
+            color: orange;
+        }
+        .pass {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>无障碍测试工具</h1>
+    <p>这个工具使用axe-core库来测试Web应用的无障碍性。</p>
+    <button onclick="runTest()">运行无障碍测试</button>
+    <div id="results"></div>
+
+    <script>
+        function runTest() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '正在测试...';
+
+            // 创建一个隐藏的iframe来加载目标网页
+            const iframe = document.createElement('iframe');
+            iframe.src = 'http://localhost:5174/';
+            iframe.style.display = 'none';
+            iframe.onload = function() {
+                try {
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    // 运行axe-core测试
+                    axe.run(iframeDoc, {
+                        runOnly: {
+                            type: 'tag',
+                            values: ['wcag2a', 'wcag2aa']
+                        }
+                    }).then(function(results) {
+                        displayResults(results);
+                        // 测试完成后移除iframe
+                        document.body.removeChild(iframe);
+                    }).catch(function(error) {
+                        resultsDiv.innerHTML = '<span class="error">测试失败: ' + error.message + '</span>';
+                        document.body.removeChild(iframe);
+                    });
+                } catch (error) {
+                    resultsDiv.innerHTML = '<span class="error">测试过程中发生错误: ' + error.message + '</span>';
+                    document.body.removeChild(iframe);
+                }
+            };
+
+            // 添加iframe到页面
+            document.body.appendChild(iframe);
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            let output = '';
+
+            // 显示测试摘要
+            output += '\n===== 无障碍测试摘要 =====\n';
+            output += `总测试项: ${results.passes.length + results.violations.length + results.incomplete.length + results.inapplicable.length}\n`;
+            output += `<span class="pass">通过: ${results.passes.length}</span>\n`;
+            output += `<span class="error">违反: ${results.violations.length}</span>\n`;
+            output += `<span class="warning">不完整: ${results.incomplete.length}</span>\n`;
+            output += `不适用: ${results.inapplicable.length}\n`;
+
+            // 显示违反无障碍规则的详细信息
+            if (results.violations.length > 0) {
+                output += '\n===== 违反无障碍规则的项目 =====\n';
+                results.violations.forEach((violation, index) => {
+                    output += `\n${index + 1}. [${violation.id}] ${violation.description}\n`;
+                    output += `   严重程度: ${violation.impact}\n`;
+                    output += `   WCAG 标准: ${violation.tags.join(', ')}\n`;
+                    output += `   受影响的元素数量: ${violation.nodes.length}\n`;
+                    output += '   解决建议: ' + violation.help + '\n';
+                });
+            }
+
+            // 显示不完整的测试项
+            if (results.incomplete.length > 0) {
+                output += '\n===== 需要手动检查的项目 =====\n';
+                results.incomplete.forEach((item, index) => {
+                    output += `\n${index + 1}. [${item.id}] ${item.description}\n`;
+                    output += `   WCAG 标准: ${item.tags.join(', ')}\n`;
+                    output += '   说明: ' + item.help + '\n';
+                });
+            }
+
+            resultsDiv.innerHTML = output;
+        }
+    </script>
+</body>
+</html>

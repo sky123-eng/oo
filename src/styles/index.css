@@ -1,0 +1,341 @@
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 简单文字动画 */
+.animate-gradient {
+  color: var(--text-primary);
+}
+
+/* 自定义样式 - Nike 风格配色方案 */
+:root {
+  /* 基础色 - 黑白主色调 */
+  --bg-primary: #000000;       /* 纯黑色 */
+  --bg-secondary: #111111;     /* 深灰黑色 */
+  --bg-tertiary: #1A1A1A;      /* 中灰黑色 */
+  
+  /* 边框和分隔色 */
+  --border-color: #333333;     /* 深灰色边框 */
+  
+  /* 文字颜色 */
+  --text-primary: #FFFFFF;     /* 纯白色文字 */
+  --text-secondary: #888888;   /* 浅灰色文字 */
+  
+  /* 交互元素 */
+  --accent-primary: #E60023;   /* 主要交互色 */
+  --accent-hover: #c4001e;     /* 悬停时的颜色 */
+  --shadow-glow: rgba(230, 0, 35, 0.3); /* 红色发光效果 */
+  
+  /* 无障碍相关变量 */
+  --focus-ring-color: #E60023;
+  --focus-ring-width: 2px;
+  --btn-min-size: 48px;
+  --btn-hover-bg: #E60023;
+  --btn-hover-scale: 1.05;
+}
+
+/* 高对比度主题 */
+.high-contrast {
+  --bg-primary: #000000;
+  --bg-secondary: #222222;
+  --bg-tertiary: #333333;
+  --border-color: #FFFFFF;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --shadow-glow: rgba(255, 255, 255, 0.5);
+  --focus-ring-color: #FFFFFF;
+  --focus-ring-width: 3px;
+}
+
+/* 字体大小调整 */
+.font-small {
+  font-size: 0.875rem;
+}
+
+.font-medium {
+  font-size: 1rem;
+}
+
+.font-large {
+  font-size: 1.125rem;
+}
+
+.font-x-large {
+  font-size: 1.25rem;
+}
+
+/* 简化布局 */
+.simplified-layout {
+  .complex-element {
+    display: none;
+  }
+  
+  .simplified-element {
+    display: block;
+  }
+}
+
+/* 单手操作模式 */
+.one-handed-mode {
+  .controls-container {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  
+  .floating-action-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* 响应式容器 */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+/* 文本截断 */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Leaflet 地图样式修复 */
+.leaflet-container {
+  font-family: inherit;
+  background-color: var(--bg-secondary);
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.leaflet-popup-tip {
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a3a;
+}
+
+/* 隐藏滚动条但保留滚动功能 */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* 动画效果 */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--shadow-glow);
+  }
+  50% {
+    box-shadow: 0 0 20px var(--shadow-glow), 0 0 30px var(--shadow-glow);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse-slow {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* 玻璃态效果 */
+.glass-effect {
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* 简约边框 */
+.gradient-border {
+  position: relative;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+/* 按钮悬停效果 - Nike风格 */
+.btn-hover-effect {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-height: var(--btn-min-size);
+  min-width: var(--btn-min-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2); /* 白色半透明效果 */
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-hover-effect:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-hover-effect:hover {
+  border-color: var(--accent-hover);
+  color: var(--accent-hover);
+  transform: scale(var(--btn-hover-scale));
+}
+
+/* 无障碍焦点样式 */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+}
+
+/* 确保所有按钮都有足够的触控面积 */
+button, [role="button"], [type="button"], [type="submit"], [type="reset"] {
+  min-height: var(--btn-min-size);
+  min-width: var(--btn-min-size);
+  padding: 0.5rem 1rem;
+}
+
+/* 语义化标签样式增强 */
+main {
+  outline: none;
+}
+
+/* 屏幕阅读器专用内容 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 增强表单元素的可访问性 */
+input, textarea, select {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--focus-ring-color);
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--focus-ring-color);
+}
+
+/* 确保链接在悬停和聚焦时有明显的视觉反馈 */
+a:hover, a:focus {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* 简化布局的元素控制 */
+.complex-element {
+  display: block;
+}
+
+.simplified-element {
+  display: none;
+}
+
+/* 动画反馈 */
+.accessibility-feedback {
+  animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 卡片悬停效果 - 简约黑白风格 */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 255, 255, 0.3);
+  border-color: var(--text-primary);
+}
+

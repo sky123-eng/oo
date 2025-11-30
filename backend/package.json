@@ -1,0 +1,35 @@
+{
+  "name": "secondhand-marketplace-backend",
+  "version": "1.0.0",
+  "description": "二手交易社交平台后端服务",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev src/server.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio"
+  },
+  "keywords": [
+    "secondhand",
+    "marketplace",
+    "social",
+    "backend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.4",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "prisma": "^5.7.0"
+  }
+}
